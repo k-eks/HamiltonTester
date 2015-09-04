@@ -13,4 +13,6 @@ def R_test(alpha, reflections, wR_A, parameters_A, wR_B, parameters_B):
     # 1 - alpha required because of pythons implemention of the F-distribution
     R = math.sqrt(dimension / freedom * F + 1)
     Rratio = wR_A / wR_B
+    print("Rratio = %f\nR = %f" %(Rratio, R))
+    print("Hypothesis: Model A is better than Model B")
     print("Reject if %f > %f at a probablility level of %f: %s" % (Rratio, R, alpha, (Rratio > R)))
