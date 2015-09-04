@@ -2,19 +2,15 @@ from scipy.stats import distributions
 import math
 
 
-def R_test(alpha):
-    F = distributions.f.ppf(1 - alpha, dimension_b, freedom_N1)
-
-    wRa = 0.0942
-    wRb = 0.0853
-    Pa = 333
-    Pb = 613
-    reflections_n = 5177
-    dimension_b = Pb - Pa # 320
-    freedom_N1 = reflections_n - Pb
-    F = distributions.f.ppf(1 - alpha, dimension_b, freedom_N1)
-    R = math.sqrt(dimension_b / freedom_N1 * F + 1)
-
-    rratio = wRa / wRb
-    rcontrast = 1 + 120 / freedom_N1 * (Rb - 1)
-    print(rratio, rcontrast)
+def R_test(alpha, reflections, wR_A, parameters_A, wR_B, parameters_B):
+    """After Hamilton 1965, used eq 24 to get R values from F values."""
+    """reflections ... n"""
+    """dimension ... b or parameters_B - parameters_A"""
+    """freedom ... b or N1"""
+    dimension = parameters_B - parameters_A
+    freedom = reflections - parameters_B
+    F = distributions.f.ppf(1 - alpha, dimension, freedom)
+    # 1 - alpha required because of pythons implemention of the F-distribution
+    R = math.sqrt(dimension / freedom * F + 1)
+    Rratio = wR_A / wR_B
+    print("Reject if %f > %f at a probablility level of %f: %s" % (Rratio, R, alpha, (Rratio > R)))
